@@ -1,4 +1,4 @@
-# Todo list 2.0 - projeto de gerenciamento de tarefas 📋
+# Todo list 2.0 📋
 Este é um projeto simples de uma aplicação de lista de tarefas (To-Do List) desenvolvida utilizando Java com Spring Boot. O objetivo é gerenciar tarefas com operações básicas como adicionar, listar, atualizar e excluir tarefas.Agora com implementação de usuários associado as tarefas e swagger.
 
 ## Tecnologias Utilizadas 🚀
