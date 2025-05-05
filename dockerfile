@@ -1,26 +1,23 @@
-# Etapa 1: Construção (compilação do código)
-FROM maven:3.8.4-openjdk-11 AS build
+# Use uma imagem oficial do Maven com OpenJDK
+FROM maven:3.8.6-openjdk-21 AS build
 
-# Define o diretório de trabalho no contêiner
+# Define o diretório de trabalho dentro do container
 WORKDIR /app
 
-# Copia os arquivos do projeto para o diretório de trabalho
-COPY . /app
+# Copia os arquivos do seu repositório para o container
+COPY . /app/
 
-# Dá permissão ao script mvnw e compila a aplicação
+# Dá permissão de execução ao arquivo mvnw e executa o Maven para compilar o projeto
 RUN chmod +x ./mvnw && ./mvnw clean install
 
-# Etapa 2: Execução (rodar a aplicação)
-FROM openjdk:11-jre-slim
+# Define a imagem final (pode ser um OpenJDK ou um servidor web)
+FROM openjdk:21-jdk
 
-# Define o diretório de trabalho
-WORKDIR /app
+# Copia o arquivo JAR gerado para a imagem final
+COPY --from=build /app/target/todo-list.jar /app/todo-list.jar
 
-# Copia o arquivo JAR gerado pela etapa de build
-COPY --from=build /app/target/*.jar /app/app.jar
-
-# Expondo a porta que a aplicação irá rodar
+# Expõe a porta que o Spring Boot estará ouvindo
 EXPOSE 8080
 
-# Comando para rodar a aplicação
-CMD ["java", "-jar", "/app/app.jar"]
+# Comando para rodar o jar
+CMD ["java", "-jar", "/app/todo-list.jar"]
