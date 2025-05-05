@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.todolist.lab_todolist.model.Task;
+import com.todolist.lab_todolist.model.User;
 import com.todolist.lab_todolist.repository.TaskRepository;
 import com.todolist.lab_todolist.repository.UserRepository;
 import com.todolist.lab_todolist.service.validation.TaskValidation;
@@ -29,10 +30,21 @@ public class TaskService  {
         for (TaskValidation validation : validations) {
             validation.validate(task); // se falhar, vai lançar Exception e parar aqui
         }
+        Optional<Task> existingTask = taskRepository.findByTitleAndDescription(task.getTitle(), task.getDescription());
+        
+        if (existingTask.isPresent()) {
+            throw new IllegalArgumentException("Já existe uma tarefa com o mesmo título e descrição.");
+        }
 
         if (task.getUser().getId() == null) {
-            userRepository.save(task.getUser());  // Salve o User antes de salvar a Task
+            User existingUser = userRepository.findByUsername(task.getUser().getUsername());
+            if (existingUser != null) {
+                task.setUser(existingUser);  // Reassocia o usuário existente à tarefa
+            } else {
+                userRepository.save(task.getUser());  // Salva o novo usuário
+            }
         }
+        
         
         return taskRepository.save(task);
     }

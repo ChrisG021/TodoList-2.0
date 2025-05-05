@@ -7,8 +7,11 @@ import org.springframework.web.bind.annotation.*;
 import com.todolist.lab_todolist.model.User;
 import com.todolist.lab_todolist.service.UserService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/users")
+@Tag(name = "User Dashboard")
 public class UserController {
     private final UserService service;
 

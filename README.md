@@ -16,7 +16,6 @@ Este é um projeto simples de uma aplicação de lista de tarefas (To-Do List) d
 - **Listar tarefas**: Exibe todas as tarefas cadastradas.
 - **Atualizar tarefa**: Permite editar uma tarefa existente.
 - **Excluir tarefa**: Remove uma tarefa da lista.
-- 
 
 ## Autor
 
