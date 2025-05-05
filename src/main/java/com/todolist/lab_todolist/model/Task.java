@@ -1,8 +1,9 @@
 package com.todolist.lab_todolist.model;
 
+
 import jakarta.persistence.*;
 
-@Entity
+@Entity(name = "tab_task")
 public class Task {         
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +16,17 @@ public class Task {
 
     @Column(length = 20, nullable = false)
     private String status;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
     
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
     public String getStatus() {
         return status;
     }

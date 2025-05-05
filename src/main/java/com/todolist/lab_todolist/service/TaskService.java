@@ -7,17 +7,20 @@ import org.springframework.stereotype.Service;
 
 import com.todolist.lab_todolist.model.Task;
 import com.todolist.lab_todolist.repository.TaskRepository;
+import com.todolist.lab_todolist.repository.UserRepository;
 import com.todolist.lab_todolist.service.validation.TaskValidation;
 
 @Service
 public class TaskService  {
 
     private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
 
     private final List<TaskValidation> validations;
 
-    public TaskService(TaskRepository taskRepository, List<TaskValidation> validations) {
+    public TaskService(TaskRepository taskRepository, List<TaskValidation> validations, UserRepository userRepository) {
         this.taskRepository = taskRepository;
+        this.userRepository = userRepository;
         this.validations = validations;
     }
 
@@ -26,6 +29,11 @@ public class TaskService  {
         for (TaskValidation validation : validations) {
             validation.validate(task); // se falhar, vai lançar Exception e parar aqui
         }
+
+        if (task.getUser().getId() == null) {
+            userRepository.save(task.getUser());  // Salve o User antes de salvar a Task
+        }
+        
         return taskRepository.save(task);
     }
     // get
